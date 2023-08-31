@@ -41,6 +41,59 @@ export default function(hljs) {
         'false',
     ];
 
+    const ESCAPED_CHARACTER = (rawDelimiter = '') => ({
+        className: 'subst',
+        variants: [
+            { 
+                match: `\\${rawDelimiter}[0\\tnr"']`,
+            },
+            { 
+                match: `\\${rawDelimiter}u\{[0-9a-fA-F]{1,8}\}`,
+            },
+        ],
+    });
+    const ESCAPED_NEWLINE = (rawDelimiter = "") => ({
+        className: 'subst',
+        match: `\\${rawDelimiter}[\t ]*(?:[\r\n]|\r\n)`,
+    });
+    const INTERPOLATION = (rawDelimiter = "") => ({
+        className: 'subst',
+        label: 'interpolation',
+        begin: `\\${rawDelimiter}\{`,
+        end: '\}',
+    });
+    const SINGLELINE_STRING = (rawDelimiter) => ({
+        begin: `${rawDelimiter}"`,
+        end: `"${rawDelimiter}`,
+        contains: [
+            ESCAPED_CHARACTER(rawDelimiter),
+            INTERPOLATION(rawDelimiter),
+        ],
+    });
+    const MULTILINE_STRING = (rawDelimiter = '') => ({
+        begin: `${rawDelimiter}"""`,
+        end: `"""${rawDelimiter}`,
+        contains: [
+            ESCAPED_CHARACTER(rawDelimiter),
+            ESCAPED_NEWLINE(rawDelimiter),
+            INTERPOLATION(rawDelimiter),
+        ]
+    });
+    const STRING = {
+        className: 'string',
+        variants: [
+            SINGLELINE_STRING(''),
+            SINGLELINE_STRING('#'),
+            SINGLELINE_STRING('##'),
+            SINGLELINE_STRING('###'),
+
+            MULTILINE_STRING(''),
+            MULTILINE_STRING('#'),
+            MULTILINE_STRING('##'),
+            MULTILINE_STRING('###'),
+        ],
+    };
+
     return {
         name: 'Draco',
         case_insensitive: false,
@@ -51,6 +104,7 @@ export default function(hljs) {
         },
         contains: [
             hljs.C_LINE_COMMENT_MODE,
+            STRING,
         ],
     };
 }
