@@ -1,0 +1,26 @@
+{
+    "name": "highlight.js-draco",
+    "version": "0.1.0",
+    "description": "draco.js syntax definition for Draco",
+    "main": "src/languages/draco.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Draco-lang/highlight.js-draco"
+    },
+    "keywords": [
+        "draco",
+        "highlight.js",
+        "highlightjs",
+        "syntax-highlight",
+        "syntax"
+    ],
+    "author": "Stef Levesque (@stef-levesque)",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Draco-lang/highlight.js-draco"
+    },
+    "homepage": "https://draco-lang.org"
+}
